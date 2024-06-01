@@ -12,6 +12,7 @@ Teniendo en cuenta las características del software a desarrollar realizar la c
 
 _________
 Creacion del proyecto Spring Boot https://start.spring.io/
+
 ![Creacion del proyecto Spring Boot https://start.spring.io/](public/Seleccion-de-dependencias-SpringBoot.png)
 
 Al iniciar un proyecto de Java con Spring se deben seleccionar las dependencias a utilizar, en este caso se importan las siguientes: 
@@ -43,6 +44,7 @@ Al programar con el modelo de vista-controlador el proyecto se suele estructurar
 
 -------
 Archivo application properties
+
 ![archivo application properties](public/archivo-application-properties.png)
 
 El archivo aplication.properties es generado automaticamente en el folder src/main/resources y se utiliza para configurar las propiedades del proyecto, en este caso se configura la conexión a base de datos (JDBC- Java Database Connectivity) y la api JPA (Java Persistence API) para convertir objetos Java en registros de base de datos y viceversa.
@@ -50,6 +52,7 @@ El archivo aplication.properties es generado automaticamente en el folder src/ma
 
 ____
 Creacion de base de datos
+
 ![Creacion de base de datos](public/crm-db.png)
 
 Antes de ejecutar el proyecto se deben crear la base de datos que se haya especificado en el archivo .properties, en este caso “crm-db”.
