@@ -27,6 +27,7 @@ Al iniciar un proyecto de Java con Spring se deben seleccionar las dependencias 
 
 -------
 Estructura de proyecto
+
 ![Estructura de proyecto](public/Estructura-de-proyecto.png)
 
 Al programar con el modelo de vista-controlador el proyecto se suele estructurar en las siguientes carpetas:
