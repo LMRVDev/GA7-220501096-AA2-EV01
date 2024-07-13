@@ -29,4 +29,6 @@ public interface CustomerService {
     boolean existByPhone(String phone);
 
     Customer findByPhone (String phone);
+
+    List<Customer> findByName(String name); 
 }

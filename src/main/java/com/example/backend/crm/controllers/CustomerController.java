@@ -20,8 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.backend.crm.models.entities.Customer;
 import com.example.backend.crm.models.payload.MessageResponse;
 import com.example.backend.crm.services.CustomerService;
-
-
+import org.springframework.web.bind.annotation.RequestParam;
 
 /*
  * La clase controlador se encarga de definir los endpoints
@@ -85,6 +84,26 @@ public class CustomerController {
                         .object(getList)
                         .build(),
                 HttpStatus.OK);
+    }
+
+    @GetMapping("/filter")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<?> filterCustomer(@RequestParam String query) {
+
+        List<Customer> clientResult = customerService.findByName(query);
+
+        if (clientResult.isEmpty()) {
+            return new ResponseEntity<>(MessageResponse.builder()
+                    .message("Ningun cliente coincide con el parámetro de búsqueda")
+                    .object(null)
+                    .build(), HttpStatus.NOT_FOUND);
+        }
+
+        return new ResponseEntity<>(MessageResponse.builder()
+                .message("")
+                .object(clientResult)
+                .build(), HttpStatus.OK);
+
     }
 
     /*
@@ -164,17 +183,19 @@ public class CustomerController {
      */
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public ResponseEntity<?> delete(Long id) {
+    public ResponseEntity<?> delete(@PathVariable Long id) {
 
         try {
 
             Customer customerDelete = customerService.findById(id);
             customerService.deleteCustomer(customerDelete);
 
-            return new ResponseEntity<>(MessageResponse.builder()
+            MessageResponse messageResponse = MessageResponse.builder()
                     .message("Cliente eliminado")
                     .object(null)
-                    .build(), HttpStatus.NO_CONTENT);
+                    .build();
+
+            return ResponseEntity.ok(messageResponse);
 
         } catch (Exception e) {
             return new ResponseEntity<>(MessageResponse.builder()

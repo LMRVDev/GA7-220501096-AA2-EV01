@@ -1,7 +1,10 @@
 package com.example.backend.crm.repositories;
 
+
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.repository.CrudRepository;
+//import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 import com.example.backend.crm.models.entities.Customer;
@@ -27,5 +30,7 @@ public interface CustomerRepository extends JpaRepository<Customer, Long>{
     boolean existsByPhoneNumber(String phoneNumber);
 
     Customer findByPhoneNumber(String phoneNumber);
+
+    List<Customer> findByNameContaining(String query);
 
 }

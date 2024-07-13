@@ -1,5 +1,7 @@
 package com.example.backend.crm.services;
 
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 import com.example.backend.crm.models.entities.Order;
 
@@ -21,5 +23,7 @@ public interface OrderService {
     void deleteOrder(Order order);
 
     boolean existById(Long id);
+
+    List<Order> getOrdersBetweenDates(LocalDate startDate, LocalDate endDate);
 
 }

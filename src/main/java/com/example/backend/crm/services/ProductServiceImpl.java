@@ -91,6 +91,8 @@ public class ProductServiceImpl implements ProductService {
             productDb.setName(product.getName());
             productDb.setDescription(product.getDescription());
             productDb.setPrice(product.getPrice());
+            productDb.setBarcode(product.getBarcode());
+            productDb.setSupplier(product.getSupplier());
             productOptional = productRepository.save(productDb);
         }
 
@@ -100,6 +102,27 @@ public class ProductServiceImpl implements ProductService {
          * del usuario.
          */
         return Optional.ofNullable(productOptional);
+    }
+
+    @Override
+    public List<Product> findByName(String name) {
+        return productRepository.findByNameContaining(name);
+    }
+
+    @Override
+    public boolean existByBarcode(String barcode) {
+        return productRepository.existsByBarcode(barcode);
+    }
+
+    @Override
+    public Product findByBarcode(String barcode) {
+        return productRepository.findByBarcode(barcode);
+        
+    }
+
+    @Override
+    public List<Product> findAllProducts() {
+        return (List<Product>) productRepository.findAll();
     }
 
 }

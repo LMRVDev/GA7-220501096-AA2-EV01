@@ -1,5 +1,9 @@
 package com.example.backend.crm.repositories;
 
+import java.time.LocalDate;
+import java.util.Date;
+import java.util.List;
+
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
@@ -21,5 +25,13 @@ import com.example.backend.crm.models.entities.Order;
  */
 @Repository
 public interface OrderRepository extends CrudRepository<Order, Long>{
+
+    /*
+     * Spring Data JPA proporciona determinada sentencia según el 
+     * nombre del método, en este caso se genera la sentncia sql
+     * 
+     * SELECT * FROM orders WHERE order_date BETWEEN ? AND ?
+     */
+    List<Order> findByOrderDateBetween(LocalDate startDate, LocalDate endDate);
 
 }

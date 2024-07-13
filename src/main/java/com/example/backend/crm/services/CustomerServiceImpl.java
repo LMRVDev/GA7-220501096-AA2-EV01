@@ -92,6 +92,7 @@ public class CustomerServiceImpl implements CustomerService {
             customerDb.setName(customer.getName());
             customerDb.setNeighborhood(customer.getNeighborhood());
             customerDb.setPhoneNumber(customer.getPhoneNumber());
+            customerDb.setEmail(customer.getEmail());
             customerOptional = customerRepository.save(customerDb);
         }
 
@@ -111,6 +112,11 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public Customer findByPhone(String phone) {
         return customerRepository.findByPhoneNumber(phone);
+    }
+
+    @Override
+    public List<Customer> findByName(String name) {
+        return customerRepository.findByNameContaining(name);
     }
 
     

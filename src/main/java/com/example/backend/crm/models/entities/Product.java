@@ -43,10 +43,14 @@ public class Product {
      * Cómo se establece: A través de la lista orderDetails
      * en la clase Product.
      */
-    @OneToMany(mappedBy = "product")
     //@JsonManagedReference
+    @OneToMany(mappedBy = "product")
     @JsonIgnore
     private List<OrderDetail> orderDetails;
+
+    private String barcode;
+
+    private String supplier;
 
 
 }

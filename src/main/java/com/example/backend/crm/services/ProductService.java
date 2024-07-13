@@ -26,4 +26,12 @@ public interface ProductService {
 
     Optional<Product> updateProduct(Product product, Long id);
 
+    List<Product> findByName(String name);
+
+    boolean existByBarcode(String barcode);
+
+    Product findByBarcode(String barcode);
+
+    List<Product> findAllProducts();
+
 }

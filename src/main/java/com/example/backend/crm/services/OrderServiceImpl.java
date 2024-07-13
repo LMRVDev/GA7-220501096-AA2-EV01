@@ -1,5 +1,7 @@
 package com.example.backend.crm.services;
 
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -67,6 +69,11 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public boolean existById(Long id) {
         return orderRepository.existsById(id);
+    }
+
+    @Override
+    public List<Order> getOrdersBetweenDates(LocalDate startDate, LocalDate endDate) {
+        return orderRepository.findByOrderDateBetween(startDate, endDate);
     }
 
     

@@ -13,11 +13,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.sql.Date;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cglib.core.Local;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -27,6 +30,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 /*
@@ -50,7 +54,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @CrossOrigin(originPatterns = "*")
 public class OrderController {
 
-
     /*
      * @Autowired se utiliza para inyectar instancias de
      * clases de servicio u otros componentes en
@@ -64,6 +67,9 @@ public class OrderController {
 
     @Autowired
     private OrderDetailService orderDetailService;
+
+    @Autowired
+    private ObjectMapper objectMapper;
 
     /*
      * @GetMapping se usa para mapear solicitudes HTTP GET
@@ -99,31 +105,6 @@ public class OrderController {
                         .build(),
                 HttpStatus.OK);
     }
-
-    /*
-     * @PostMapping es una anotación que se utiliza para
-     * mapear una solicitud HTTP POST a un método.
-     */
-    // @PostMapping
-    // @ResponseStatus(HttpStatus.CREATED)
-    // public ResponseEntity<?> create(@RequestBody Order order) {
-
-    // try {
-
-    // Order orderSave = orderService.saveOrder(order);
-
-    // return new ResponseEntity<>(MessageResponse.builder()
-    // .message("Orden guardada")
-    // .object(orderSave)
-    // .build(), HttpStatus.CREATED);
-
-    // } catch (Exception e) {
-    // return new ResponseEntity<>(MessageResponse.builder()
-    // .message(e.getMessage())
-    // .object(null)
-    // .build(), HttpStatus.METHOD_NOT_ALLOWED);
-    // }
-    // }
 
     /*
      * @GetMapping("/{id}") se utiliza para mapear solicitudes
@@ -188,57 +169,60 @@ public class OrderController {
     public ResponseEntity<?> createOrder(@RequestBody Map<String, Object> request) {
 
         try {
-            
-            //Obtener Order, Customer y OrderList del JSON
-            Order order = new ObjectMapper().convertValue(request.get("order"), Order.class);
+
+            // Obtener Order, Customer y OrderList del JSON
+            Order order = objectMapper.convertValue(request.get("order"), Order.class);
             Customer customer = new ObjectMapper().convertValue(request.get("customer"), Customer.class);
             List<OrderDetail> orderDetailsFromJson = (List<OrderDetail>) request.get("orderDetail");
-            
+
             // Crear una lista vacía de OrderDetail para almacenar los objetos convertidos:
             List<OrderDetail> orderDetails = new ArrayList<>();
-    
+
             // Iterar la lista y convertir cada objeto a OrderDetail
             for (Object obj : orderDetailsFromJson) {
-                OrderDetail orderDetailIte = new ObjectMapper().convertValue(obj, OrderDetail.class);
+                OrderDetail orderDetailIte = objectMapper.convertValue(obj, OrderDetail.class);
                 orderDetails.add(orderDetailIte);
             }
-    
-            // Obtener la fecha actual
-            Date orderDate = Date.valueOf(LocalDate.now());
-    
+
             // Verificar si el cliente existe
             if (customerService.existByPhone(customer.getPhoneNumber())) {
-    
+
                 // El cliente ya existe, obtenlo de la base de datos
                 Customer existingCustomer = customerService.findByPhone(customer.getPhoneNumber());
-    
+
                 // El cliente ya existe, asignar su ID a la orden
                 order.setCustomer(existingCustomer);
                 System.out.println("Cliente encontrado: " + existingCustomer.getName());
-    
+
             } else {
-    
+
                 // El cliente no existe, crearlo
                 Customer customerSave = customerService.saveCustomer(customer);
                 order.setCustomer(customerSave);
-    
+
             }
-    
-            // Asignar la fecha a la orden
-            order.setOrderDate(orderDate);
-    
-            //Asignar OrderDetails a la Order
+
+            if (order.getOrderDate() == null) {
+
+                // Obtener la fecha actual
+                LocalDate currentDate = LocalDate.now();
+
+                order.setOrderDate(currentDate);
+
+            }
+
+            // Asignar OrderDetails a la Order
             order.setOrderDetails(orderDetails);
-    
+
             // Crear la orden
             Order orderSave = orderService.saveOrder(order);
-    
-            //Guardar OrderDetail
-            for (OrderDetail ite: orderDetails){
+
+            // Guardar OrderDetail
+            for (OrderDetail ite : orderDetails) {
                 ite.setOrder(orderSave);
                 orderDetailService.saveOrderDetail(ite);
             }
-    
+
             // Devolver la respuesta
             return new ResponseEntity<>(MessageResponse.builder()
                     .message("Orden guardada")
@@ -248,13 +232,126 @@ public class OrderController {
         } catch (Exception e) {
 
             return new ResponseEntity<>(MessageResponse.builder()
-            .message(e.getMessage())
-            .object(null)
-            .build(), HttpStatus.METHOD_NOT_ALLOWED);
+                    .message(e.getMessage())
+                    .object(null)
+                    .build(), HttpStatus.METHOD_NOT_ALLOWED);
 
         }
 
+    }
+
+    @PostMapping("/saveOrders")
+    @ResponseStatus(HttpStatus.CREATED)
+    public ResponseEntity<?> createOrders(@RequestBody List<Map<String, Object>> requests) {
+
+        List<Order> savedOrders = new ArrayList<>();
+
+        try {
+            for (Map<String, Object> request : requests) {
+                // Obtener Order, Customer y OrderList del JSON
+                Order order = objectMapper.convertValue(request.get("order"), Order.class);
+                Customer customer = new ObjectMapper().convertValue(request.get("customer"), Customer.class);
+                List<OrderDetail> orderDetailsFromJson = (List<OrderDetail>) request.get("orderDetail");
+
+                // Crear una lista vacía de OrderDetail para almacenar los objetos convertidos:
+                List<OrderDetail> orderDetails = new ArrayList<>();
+
+                // Iterar la lista y convertir cada objeto a OrderDetail
+                for (Object obj : orderDetailsFromJson) {
+                    OrderDetail orderDetailIte = objectMapper.convertValue(obj, OrderDetail.class);
+                    orderDetails.add(orderDetailIte);
+                }
+
+                // Verificar si el cliente existe
+                if (customerService.existByPhone(customer.getPhoneNumber())) {
+
+                    // El cliente ya existe, obtenlo de la base de datos
+                    Customer existingCustomer = customerService.findByPhone(customer.getPhoneNumber());
+
+                    // El cliente ya existe, asignar su ID a la orden
+                    order.setCustomer(existingCustomer);
+                    System.out.println("Cliente encontrado: " + existingCustomer.getName());
+
+                } else {
+
+                    // El cliente no existe, crearlo
+                    Customer customerSave = customerService.saveCustomer(customer);
+                    order.setCustomer(customerSave);
+
+                }
+
+                if (order.getOrderDate() == null) {
+
+                    // Obtener la fecha actual
+                    LocalDate currentDate = LocalDate.now();
+
+                    order.setOrderDate(currentDate);
+
+                }
+
+                // Asignar OrderDetails a la Order
+                order.setOrderDetails(orderDetails);
+
+                // Crear la orden
+                Order orderSave = orderService.saveOrder(order);
+
+                // Guardar OrderDetail
+                for (OrderDetail ite : orderDetails) {
+                    ite.setOrder(orderSave);
+                    orderDetailService.saveOrderDetail(ite);
+                }
+
+                // Agregar la orden procesada a la lista de órdenes guardadas
+                savedOrders.add(orderSave);
+            }
+
+            // Devolver la respuesta
+            return new ResponseEntity<>(MessageResponse.builder()
+                    .message("Órdenes guardadas")
+                    .object(savedOrders)
+                    .build(), HttpStatus.CREATED);
+
+        } catch (Exception e) {
+
+            return new ResponseEntity<>(MessageResponse.builder()
+                    .message(e.getMessage())
+                    .object(null)
+                    .build(), HttpStatus.METHOD_NOT_ALLOWED);
+
+        }
 
     }
 
+    @GetMapping("/filterByDate")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<?> filterOrdersByDate(
+            @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate from,
+            @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate to) {
+
+        try {
+            List<Order> filteredOrders = orderService.getOrdersBetweenDates(from, to);
+
+            if (filteredOrders == null) {
+                return new ResponseEntity<>(MessageResponse.builder()
+                        .message("No existen registros para las fechas seleccionadas")
+                        .object(null)
+                        .build(), HttpStatus.OK);
+            }
+
+            return new ResponseEntity<>(
+                    MessageResponse.builder()
+                            .message("")
+                            .object(filteredOrders)
+                            .build(),
+                    HttpStatus.OK);
+
+        } catch (Exception e) {
+            return new ResponseEntity<>(MessageResponse.builder()
+                    .message(e.getMessage())
+                    .object(null)
+                    .build(), HttpStatus.METHOD_NOT_ALLOWED);
+        }
+    }
+
+    
 }

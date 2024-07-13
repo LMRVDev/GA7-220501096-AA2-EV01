@@ -2,7 +2,9 @@ package com.example.backend.crm.models.entities;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -21,7 +23,12 @@ import lombok.ToString;
 /*
  * Las entidades son clases Java que se utilizan para
  * representar datos en una base de datos relacional.
+ * 
+ * La anotación JsonIdentityInfo permite gestionar relaciones 
+ * bidireccionales durante la serializacion/desserialización JSON.
+ * En este caso, la propiedad List<Order> orders será gestionada segun su id. 
  */
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -55,10 +62,12 @@ public class Customer {
     @Size(min = 3, message = "La ciudad del cliente debe tener al menos 3 caracteres")
     private String city;
 
+    //@JsonManagedReference
     @OneToMany(mappedBy = "customer")
-    @JsonManagedReference
     private List<Order> orders;
 
+    @Size(min = 3)
+    private String email;
 
     
 }
