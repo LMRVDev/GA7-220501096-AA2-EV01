@@ -86,6 +86,12 @@ public class CustomerController {
                 HttpStatus.OK);
     }
 
+    /*
+     * El método filterCustomer recibe un parametro de búsqueda
+     * el cual es utilizado por la funcíón customerService.findByName
+     * para retornar una lista de clientes los cuales coincidan con 
+     * el nombre recibido en el parametro.
+     */
     @GetMapping("/filter")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<?> filterCustomer(@RequestParam String query) {
@@ -109,6 +115,10 @@ public class CustomerController {
     /*
      * @PostMapping es una anotación que se utiliza para
      * mapear una solicitud HTTP POST a un método.
+     * 
+     * El método create recibe un payload en formato json
+     * con los parametros requeridos por la entidad cliente
+     * para guardarlo en base de datos
      */
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
@@ -180,6 +190,9 @@ public class CustomerController {
      * @DeleteMapping especifica que el método solo manejará
      * las solicitudes que se realicen utilizando el método
      * HTTP DELETE.
+     * 
+     * El método delete recibe un parámetro variable que 
+     * equivale al id del cliente que se desea eliminar
      */
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -209,6 +222,10 @@ public class CustomerController {
      * @PutMapping especifica que el método solo manejará
      * las solicitudes que se realicen utilizando el método
      * HTTP PUT.
+     * 
+     * El método update recibe un parametro variable y un payload
+     * que equivalen a el id y datos modificados del cliente que
+     * se desea actualizar.
      */
     @PutMapping("/{id}")
     public ResponseEntity<?> update(@RequestBody Customer customer,

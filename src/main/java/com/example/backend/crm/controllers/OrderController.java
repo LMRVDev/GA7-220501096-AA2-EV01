@@ -322,6 +322,10 @@ public class OrderController {
 
     }
 
+    /*
+     * El método filterOrdersByDate recibe dos parámetros en formato
+     * de fecha para seleccionar el rango de filtro de órdenes
+     */
     @GetMapping("/filterByDate")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<?> filterOrdersByDate(
