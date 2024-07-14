@@ -6,11 +6,17 @@ PRESENTADO POR: LUIS MIGUEL RODRIGUEZ VARGAS
 
 INSTRUCTOR: ING. FERNANDO FORERO GOMEZ
 
-Evidencia de desempeño: GA7-220501096-AA2-EV01 codificación de módulos del software según requerimientos del proyecto
+Evidencia de desempeño: API del Proyecto GA7-220501096-AA5-EV04
 
-Teniendo en cuenta las características del software a desarrollar realizar la codificación del módulo del proyecto realizando conexiones con bases de datos por medio de JDBC tomando como referencia lo visto en el componente formativo “Construcción de aplicaciones con JAVA”. 
+Teniendo en cuenta lo realizado en la AA5-EV03 realice el testing de las API 's del proyecto construidas usando la herramienta postman.
 
+Elementos para tener en cuenta: 
+● Debe instalar la herramienta postman. 
+● Debe realizar un video mostrando el testing de las API 's con la herramienta Postman.
+● Documentar con pantallazos el testing realizado.
+● Entregar los ENDPOINT de las API’s
 _________
+
 Creacion del proyecto Spring Boot https://start.spring.io/
 ![Creacion del proyecto Spring Boot https://start.spring.io/](public/Seleccion-de-dependencias-SpringBoot.png)
 
