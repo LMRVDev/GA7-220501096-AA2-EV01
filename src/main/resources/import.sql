@@ -1,3 +1,15 @@
+USE `crm-db`;
+
+-- Definir roles y usuario administrador con contraseña encriptada "12345"
+
+INSERT INTO roles (id, name) VALUES (1, 'ROLE_ADMIN');
+INSERT INTO roles (id, name) VALUES (2, 'ROLE_USER');
+INSERT INTO users (id, username, email, password) VALUES (1, 'admin', 'admin@mail.com', '$2a$10$ZuVT5C0tlXccsqV5mvAig.253ELw2RxzMxhrP7/BYtATjB53Jdtn2');
+INSERT INTO users_roles (role_id, user_id) VALUES (1, 1);
+
+
+-- INSERT INTO users (id, username, email, password) VALUES (1, 'admin', 'admin@mail.com', '$2b$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEaMCi7iE.bHPUxw5r/P3wqjvHFC');
+
 INSERT INTO customer (name, phone_number, address, neighborhood, city) VALUES ('Carlos Pérez', '3111234567', 'Calle Falsa 123', 'La Floresta', 'Bogotá');
 INSERT INTO customer (name, phone_number, address, neighborhood, city) VALUES ('Ana Gómez', '3229876543', 'Avenida Siempre Viva 742', 'El Poblado', 'Medellín');
 INSERT INTO customer (name, phone_number, address, neighborhood, city) VALUES ('Luis Martínez', '3135555555', 'Carrera 45 #12-34', 'Chapinero', 'Bogotá');
@@ -194,42 +206,3 @@ SET @orderId = LAST_INSERT_ID();
 INSERT INTO order_detail (order_id, product_id, quantity) VALUES (@orderId, 9, 3);
 INSERT INTO order_detail (order_id, product_id, quantity) VALUES (@orderId, 10, 2);
 
--- -- Insertar Orden 16
--- INSERT INTO orders (order_date, payment_mode, total_amount, customer_id) VALUES ('2024-01-25', 'Transferencia Bancaria', 68.97, 1);
-
--- SET @orderId = LAST_INSERT_ID();
-
--- INSERT INTO order_detail (order_id, product_id, quantity) VALUES (@orderId, 11, 1);
--- INSERT INTO order_detail (order_id, product_id, quantity) VALUES (@orderId, 12, 2);
-
--- -- Insertar Orden 17
--- INSERT INTO orders (order_date, payment_mode, total_amount, customer_id) VALUES ('2024-01-26', 'Efectivo', 75.97, 2);
-
--- SET @orderId = LAST_INSERT_ID();
-
--- INSERT INTO order_detail (order_id, product_id, quantity) VALUES (@orderId, 13, 2);
--- INSERT INTO order_detail (order_id, product_id, quantity) VALUES (@orderId, 14, 1);
-
--- -- Insertar Orden 18
--- INSERT INTO orders (order_date, payment_mode, total_amount, customer_id) VALUES ('2024-01-27', 'Tarjeta de Crédito', 50.97, 3);
-
--- SET @orderId = LAST_INSERT_ID();
-
--- INSERT INTO order_detail (order_id, product_id, quantity) VALUES (@orderId, 15, 3);
-
--- -- Insertar Orden 19
--- INSERT INTO orders (order_date, payment_mode, total_amount, customer_id) VALUES ('2024-01-28', 'PayPal', 104.97, 4);
-
--- SET @orderId = LAST_INSERT_ID();
-
--- INSERT INTO order_detail (order_id, product_id, quantity) VALUES (@orderId, 1, 1);
--- INSERT INTO order_detail (order_id, product_id, quantity) VALUES (@orderId, 2, 1);
--- INSERT INTO order_detail (order_id, product_id, quantity) VALUES (@orderId, 3, 1);
-
--- -- Insertar Orden 20
--- INSERT INTO orders (order_date, payment_mode, total_amount, customer_id) VALUES ('2024-01-29', 'Tarjeta de Débito', 129.96, 5);
-
--- SET @orderId = LAST_INSERT_ID();
-
--- INSERT INTO order_detail (order_id, product_id, quantity) VALUES (@orderId, 4, 2);
--- INSERT INTO order_detail (order_id, product_id, quantity) VALUES (@orderId, 5, 2);
