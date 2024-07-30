@@ -15,6 +15,7 @@ Backend: Desarrollado en Java y utilizando el framework Spring, el backend actú
 Frontend: Construido con JavaScript y React, el frontend ofrece una interfaz de usuario intuitiva y dinámica. React permite crear interfaces de usuario complejas de manera eficiente y modular, proporcionando una experiencia de usuario óptima.
 
 Base de datos: Utilizamos MySQL como sistema de gestión de bases de datos relacionales. MySQL almacena de forma estructurada toda la información de los clientes, sus interacciones, historial de compras y otros datos relevantes. Su alta performance y fiabilidad garantizan un acceso rápido y seguro a la información.
+
 _________
 
 Creacion del proyecto Spring Boot https://start.spring.io/
@@ -32,7 +33,9 @@ Al iniciar un proyecto de Java con Spring se deben seleccionar las dependencias 
 -MySQL Driver: Permite la conexión con MySQL.
 
 ____
+
 Estructura de proyecto
+
 ![Estructura de proyecto](public/Estructura-de-proyecto.png)
 
 Al programar con el modelo de vista-controlador el proyecto se suele estructurar en las siguientes carpetas:
@@ -50,6 +53,7 @@ Al programar con el modelo de vista-controlador el proyecto se suele estructurar
 -Config: Configuraciones adicionales
 
 ____
+
 Archivo application properties
 
 ![archivo application properties](public/archivo-application-properties.png)
@@ -59,6 +63,7 @@ El archivo aplication.properties es generado automaticamente en el folder src/ma
 ![archivos de configuración](public/configuration-properties.png)
 
 Los archivos .properties se empaquetan automaticamente con el proyecto segun el perfil seleccionado por el usuario, en este caso, el proyecto permite seleccionar entre perfil de desarrollo y producción
+
 ____
 
 Creacion de base de datos
